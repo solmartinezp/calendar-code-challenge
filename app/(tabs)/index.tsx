@@ -6,50 +6,19 @@ import { ScrollView } from 'react-native-gesture-handler';
 import getMonthName from '@/hooks/getMonthName';
 import Card from '@/components/Card';
 
-interface Action {
-  [x: string]: Key | null | undefined;
-  name: string;
-  vendor?: { vendorName: string }; // Make vendor property optional
-  status: string;
-  scheduledDate: string;
-}
+import { Action } from '../models/ChallengeData';
+import { Calendar } from '../models/ChallengeData';
+import { Customer } from '../models/ChallengeData';
+import { ChallengeData } from '../models/ChallengeData';
 
-interface CalendarItem {
-  month: number;
-  year: number;
-  actions: Action[];
-}
-
-interface CustomerInfo {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  city: string;
-  street: string;
-  state: string;
-  email: string;
-  zip: string;
-  id: string;
-}
-
-interface ResponseData {
-  created: string;
-  customer: CustomerInfo;
-  deleted: boolean;
-  calendar: CalendarItem[];
-  id: string;
-  status: string;
-  zip: string;
-}
-
-export default function Calendar() {
-  const [customer, setCustomer] = useState<CustomerInfo | null>(null);
+export default function CalendarItem() {
+  const [customer, setCustomer] = useState<Customer | null>(null);
   const [filteredActions, setFilteredActions] = useState<Action[]>([]);
-  const [sortedCalendar, setSortedCalendar] = useState<CalendarItem[]>([]);
+  const [sortedCalendar, setSortedCalendar] = useState<Calendar[]>([]);
 
   useEffect(() => {
     // Simulated JSON response from GET request
-    const responseData: ResponseData = {
+    const responseData: ChallengeData = {
       created: "2024-05-30T16:23:46+00:00",
       customer: {
         zip: "30308",
@@ -340,19 +309,13 @@ export default function Calendar() {
         <Header title="Calendar" />
 
         {sortedCalendar.map((item, index) => (
-        <View key={index} style={{ marginBottom: 20 }}>
+        <View key={index} >
           <Text style={styles.date}>
             {`${getMonthName(item.month)} ${item.year}`}
           </Text>
           {item.actions.length < 1 ?  (
              <Card
-              key=""
-              title=""
-              subtitle=""
-              phoneNumber=""
-              address=""
               status="None"
-              currentDate=""
            />
           ) : 
             item.actions.map(action => (
@@ -363,7 +326,7 @@ export default function Calendar() {
                   phoneNumber={customer?.phoneNumber}
                   address={`${customer?.street}, ${customer?.city}, ${customer?.state}`}
                   status={action.status}
-                  currentDate={action.scheduledDate ? action.scheduledDate : ''}
+                  currentDate={action.scheduledDate ?? ''}
                 />
               ))
           }
@@ -377,9 +340,10 @@ export default function Calendar() {
 const styles = StyleSheet.create({
   date: {
     fontSize: 16,
-    fontFamily: 'Lato-Bold.ttf',
+    fontFamily: 'Lato-Regular.ttf',
     fontWeight: 'bold',
     marginTop: 20,
-    marginBottom: 20
+    width: '92%',
+    alignSelf: 'center'
   }
 });

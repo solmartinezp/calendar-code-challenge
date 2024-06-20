@@ -15,7 +15,7 @@ export const Colors = {
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
     successCard: '#00B47D',
-    scheduledCard: '##006a4b',
+    scheduledCard: '#006a4b',
     TBDCard: '#011638',
     NoMaintenanceCard: '#848FA5'
   },
@@ -27,7 +27,7 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
     successCard: '#00B47D',
-    scheduledCard: '##006a4b',
+    scheduledCard: '#006a4b',
     TBDCard: '#011638',
     NoMaintenanceCard: '#848FA5'
   },

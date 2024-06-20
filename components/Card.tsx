@@ -2,27 +2,24 @@ import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, Image } from 'react-native';
 import { Colors } from '../constants/Colors';
 import formatDate from '../hooks/formatDate';
+
 import { MaterialIcons } from '@expo/vector-icons';
+import { CheckCircleIcon } from "react-native-heroicons/solid";
+import { ClockIcon } from "react-native-heroicons/outline";
 
-interface Vendor {
-  vendorName: string;
-}
-
-interface Action {
-  name: string;
-  vendor?: Vendor;
-  status: string;
-  scheduledDate: string;  
-}
+import { Vendor } from '@/app/models/ChallengeData';
+import { Action } from '@/app/models/ChallengeData';
 
 interface CardProps {
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
   phoneNumber?: string;
-  address: string;
-  currentDate: string;
+  address?: string;
+  currentDate?: string;
   status: string;
 }
+
+// STATUS: SCHEDULED, COMPLETED, Unscheduled
 
 const Card: React.FC<CardProps> = ({
   title,
@@ -41,13 +38,23 @@ const Card: React.FC<CardProps> = ({
       ) : (
         <>
           <View style={styles.statusDiv}>
-              <Text style={styles.statusDate}>{formatDate(currentDate).trimmedDayName}</Text>
-              <Text style={styles.statusDateNumber}>{formatDate(currentDate).dayNumber}</Text>
-              {status === '200' ? (
-                <Image source={require('../assets/images/SuccessIcon.png')} style={styles.statusIcon} />
+              {status === 'Unscheduled' ? (
+                <Text style={styles.statusDate}>TBD</Text>
+              ) : (
+                 <><Text style={styles.statusDate}>{formatDate(currentDate).trimmedDayName}</Text><Text style={styles.statusDateNumber}>{formatDate(currentDate).dayNumber}</Text></>
+              )}
+              {status === 'Completed' ? (
+                <CheckCircleIcon color={Colors.light.successCard} size={18} style={{ margin: 0 }} />
+              ) : status === 'Scheduled' ? (
+                <ClockIcon color={Colors.light.successCard} size={18} style={{ margin: 0 }} />
               ) : null}
             </View>
-            <View style={styles.successCard}>
+            <View
+              style={{
+                ...(status === 'Completed' ? styles.successCard :
+                  (status === 'Scheduled' ? styles.scheduledCard : styles.TBDCard))
+              }}
+            >
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.subtitle}>{subtitle}</Text>
                 <Text style={styles.phoneText}>{phoneNumber}</Text>
@@ -70,7 +77,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: '1%'
+    marginTop: '1%',
+    width: '100%'
   },
   statusDiv: {
     display: 'flex',
