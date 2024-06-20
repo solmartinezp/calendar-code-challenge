@@ -19,11 +19,6 @@ The following project consists on a Calendar App addressed to the Diggs recruiti
    ```
 
 ## CLARIFICATIONS:
-The command that ended up working for me was ```bash
-   npm start
-   ```
-NOT    ```bash
-   npm expo start
-   ```
+The command that ended up working for me was "npm start", NOT "npm expo start"
 
-# Thank you for you time and consideration! Happy coding <3
+Thank you for you time and consideration! Happy coding <3
