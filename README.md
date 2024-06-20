@@ -1,6 +1,8 @@
 # Digs Calendar Code Challenge
+Author: Sol Martinez
 
-This is the candaidate test for Digs UI developers. It is NOT pass/fail. It is intended to provide insight into the range of your skill set. Please do what you can.
+## ABOUT:
+The following project consists on a Calendar App addressed to the Diggs recruiting team in order to evaluate my application to join their Dev Team.
 
 ## Get started
 
@@ -13,17 +15,15 @@ This is the candaidate test for Digs UI developers. It is NOT pass/fail. It is i
    ```
 3. Start the app
    ```bash
+   npm start
+   ```
+
+## CLARIFICATIONS:
+The command that ended up working for me was ```bash
+   npm start
+   ```
+NOT    ```bash
    npm expo start
    ```
 
-## Instructions for the test
-
-Your task is to reproduce the design and styles from the Figma mockup provided. Pay close attention to detail to ensure your implementation matches the mockup as closely as possible.
-
-1. Use the Figma link provided to you from the Interview Process email you received
-2. Use the data provided at this endpoint to populate your design:
-   https://xjvq5wtiye.execute-api.us-east-1.amazonaws.com/interview/api/v1/challenge
-
-## Submission
-
-Once you have completed the challenge, please push your code to a public repository on your GitHub account and share the link with us **by way of replying all to the Interview Process email you received**.
+# Thank you for you time and consideration! Happy coding <3
