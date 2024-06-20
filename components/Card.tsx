@@ -7,9 +7,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { CheckCircleIcon } from "react-native-heroicons/solid";
 import { ClockIcon } from "react-native-heroicons/outline";
 
-import { Vendor } from '@/app/models/ChallengeData';
-import { Action } from '@/app/models/ChallengeData';
-
 interface CardProps {
   title?: string;
   subtitle?: string;
@@ -19,8 +16,6 @@ interface CardProps {
   status: string;
 }
 
-// STATUS: SCHEDULED, COMPLETED, Unscheduled
-
 const Card: React.FC<CardProps> = ({
   title,
   subtitle,
@@ -28,47 +23,85 @@ const Card: React.FC<CardProps> = ({
   address,
   currentDate,
   status,
-}) => {  
-  return (
-    <View style={styles.mainDiv}>
-      { status === 'None' ? (
+}) => {
+
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case 'Completed':
+        return styles.successCard;
+      case 'Scheduled':
+        return styles.scheduledCard;
+      case 'Unscheduled':
+        return styles.TBDCard;
+      default:
+        return styles.NoMaintenanceCard;
+    }
+  };
+  
+  const statusStyle = getStatusStyle(status);
+
+  const renderStatusDate = () => {
+    if (status === 'Unscheduled') {
+      return <Text style={styles.statusDate}>TBD</Text>;
+    } else if (status !== 'None') {
+      const formattedDate = formatDate(currentDate);
+      return (
+        <>
+          <Text style={styles.statusDate}>{formattedDate.trimmedDayName}</Text>
+          <Text style={styles.statusDateNumber}>{formattedDate.dayNumber}</Text>
+        </>
+      );
+    } else {
+      return <Text style={styles.statusNone}>TBD</Text>;
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'Completed':
+        return <CheckCircleIcon color={Colors.light.successCard} size={18} style={{ margin: 0 }} />;
+      case 'Scheduled':
+        return <ClockIcon color={Colors.light.successCard} size={18} style={{ margin: 0 }} />;
+      default:
+        return null;
+    }
+  };
+
+  const renderMaintenanceInfo = () => {
+    if (status === 'None') {
+      return (
         <View style={styles.NoMaintenanceCard}>
           <Text style={styles.title}>No Maintenance Scheduled</Text>
         </View>
-      ) : (
+      );
+    } else {
+      return (
         <>
-          <View style={styles.statusDiv}>
-              {status === 'Unscheduled' ? (
-                <Text style={styles.statusDate}>TBD</Text>
-              ) : (
-                 <><Text style={styles.statusDate}>{formatDate(currentDate).trimmedDayName}</Text><Text style={styles.statusDateNumber}>{formatDate(currentDate).dayNumber}</Text></>
-              )}
-              {status === 'Completed' ? (
-                <CheckCircleIcon color={Colors.light.successCard} size={18} style={{ margin: 0 }} />
-              ) : status === 'Scheduled' ? (
-                <ClockIcon color={Colors.light.successCard} size={18} style={{ margin: 0 }} />
-              ) : null}
-            </View>
-            <View
-              style={{
-                ...(status === 'Completed' ? styles.successCard :
-                  (status === 'Scheduled' ? styles.scheduledCard : styles.TBDCard))
-              }}
-            >
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.subtitle}>{subtitle}</Text>
-                <Text style={styles.phoneText}>{phoneNumber}</Text>
-                <View style={styles.addressContainer}>
-                  <MaterialIcons name="location-on" size={20} color="#888" style={styles.icon} />
-                  <Text style={styles.text}>{address}</Text>
-                </View>
-                <Text style={styles.text}>{status}</Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.phoneText}>{phoneNumber}</Text>
+          <View style={styles.addressContainer}>
+            <MaterialIcons name="location-on" size={20} color="#888" style={styles.icon} />
+            <Text style={styles.text}>{address}</Text>
           </View>
+          <Text style={styles.text}>{status}</Text>
         </>
-       
-      ) 
-      }
+      );
+    }
+  };
+
+  return (
+    <View style={styles.mainDiv}>
+      <View style={styles.statusDiv}>
+        {renderStatusDate()}
+        {getStatusIcon(status)}
       </View>
+      <View
+        style={statusStyle}
+      >
+        {renderMaintenanceInfo()}
+      </View>
+    </View>
   );
 };
 
@@ -143,12 +176,13 @@ const styles = StyleSheet.create({
   },
   NoMaintenanceCard: {
     borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
+    padding: 8,
     elevation: 2,
     width: '90%',
-    alignSelf: 'center',
     backgroundColor: Colors.light.NoMaintenanceCard
+  },
+  statusNone: {
+    opacity: 0
   },
   title: {
     fontSize: 16,

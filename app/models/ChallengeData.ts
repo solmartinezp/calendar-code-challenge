@@ -11,6 +11,7 @@ export interface Calendar {
   actions: Action[];
   month: number;
   year: number;
+  deleted: boolean;
 }
 
 export interface Action {
